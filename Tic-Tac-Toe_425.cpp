@@ -1,126 +1,153 @@
 #include<iostream>
+#include <conio.h>
+
 using namespace std;
 
-void disp (char inp[3][3]){
-	for(int a=0;a<3;a++){
-		cout<<"---------------"<<endl;
-	for(int b=0;b<3;b++){
+void add(char a[3][3], char inp, char ch) {
+    int num = inp - 49;
+    int row = num / 3;
+    int col = num % 3;
+    a[row][col] = ch;
+}
 
-			cout<<"| "<<inp[a][b]<<" |";
-	}
-	cout<<endl;
-	}
-	cout<<"---------------"<<endl;
+void disp(char a[3][3], char num[3][3]) {
+	cout<<"TIC TAC TOE GAME BY REGIANA HERMAWAN - 2338018425\n";
+	cout<<"=================================================\n";
+    cout << "\nTekan esc untuk keluar dari game\n\n";
+    for (int i = 0; i < 3; i++) {
+        cout << "-------------\n";
+        for (int j = 0; j < 3; j++) {
+        	if (a[i][j] == 'a'){
+                cout << "| "<<num[i][j]<< " ";
+        	}else
+                cout << "| " << a[i][j] << " ";
+       		}
+        cout << "|\n";
+    }
+    cout << "-------------\n";
 }
-void convert(char ch, int per, char cnv, char inp[3][3] ){
-	for(int a=0;a<3;a++){
-		for(int c=0;c<3;c++){
-			if(per%2==0){
-				ch='O';
-				per++;
-			}
-			else{
-				ch='X';
-				per++;
-			}
-			if(cnv==inp[a][c]){
-				inp[a][c]=ch;
-			}
-		}
-	}
-	
+
+int check(char a[3][3], char inp) {
+    int num = inp - 48;
+    
+    if (num <= 0 || num >= 10)
+        return 0;
+    num--;
+    
+    int row = num / 3;
+    int col = num % 3;
+    if (a[row][col] == 'a')
+        return 1;
+    else
+        return 0;
 }
-void terisi(char cnv, char inp[3][3]){
-	char a=cnv;
-	char b=inp[0][0];
-	if (a==1){
-		if (b=='X'||b=='O'){
-			cout<<"Ini sudah terisi, silahkan masukkan ulang"<<endl;
-		}
-		else{
-			cout<<"okk";
-		}
-	}
-	else if (cnv==2){
-		if(inp[0][1]=='X'||inp[0][1]=='O'){
-			cout<<"Ini sudah terisi, silahkan masukkan ulang"<<endl;
-		}
-	}
-	else if (cnv==3){
-		if(inp[0][2]=='X'||inp[0][2]=='O'){
-			cout<<"Ini sudah terisi, silahkan masukkan ulang"<<endl;
-		}
-	}
-	else if (cnv==4){
-		if(inp[1][0]=='X'||inp[1][0]=='O'){
-			cout<<"Ini sudah terisi, silahkan masukkan ulang"<<endl;
-		}
-	}
-	else if (cnv==5){
-		if(inp[1][1]=='X'||inp[1][1]=='O'){
-			cout<<"Ini sudah terisi, silahkan masukkan ulang"<<endl;
-		}
-	}
-	else if (cnv==6){
-		if(inp[1][2]=='X'||inp[1][2]=='O'){
-			cout<<"Ini sudah terisi, silahkan masukkan ulang"<<endl;
-		}
-	}
-	else if (cnv==7){
-		if(inp[2][0]=='X'||inp[2][0]=='O'){
-			cout<<"Ini sudah terisi, silahkan masukkan ulang"<<endl;
-		}
-	}
-	else if (cnv==8){
-		if(inp[2][1]=='X'||inp[2][1]=='O'){
-			cout<<"Ini sudah terisi, silahkan masukkan ulang"<<endl;
-		}
-	}
-	else if (cnv==9){
-		if(inp[2][2]=='X'||inp[2][2]=='O'){
-			cout<<"Ini sudah terisi, silahkan masukkan ulang"<<endl;
-		}
-	}
-	
+
+char gameover(char a[3][3]) {
+    char winner = 'a';
+    
+    if (a[0][0] == a[0][1] && a[0][0] == a[0][2] && a[0][0] != 'a')
+        	winner = a[0][0];
+    else if (a[1][0] == a[1][1] && a[1][0] == a[1][2] && a[1][0] != 'a')
+       		 winner = a[1][0];
+    else if (a[2][0] == a[2][1] && a[2][0] == a[2][2] && a[2][0] != 'a')
+       		 winner = a[2][0];
+    else if (a[0][0] == a[1][0] && a[0][0] == a[2][0] && a[0][0] != 'a')
+       		 winner = a[1][0];
+    else if (a[0][1] == a[1][1] && a[0][1] == a[2][1] && a[0][1] != 'a')
+       		 winner = a[1][0];
+    else if (a[0][2] == a[1][2] && a[0][2] == a[2][2] && a[0][2] != 'a')
+       		 winner = a[1][0];
+    else if (a[0][0] == a[1][1] && a[0][0] == a[2][2] && a[0][0] != 'a')
+       		 winner = a[0][0];
+    else if (a[0][2] == a[1][1] && a[0][2] == a[2][0] && a[0][2] != 'a')
+       		 winner = a[0][2];
+
+    return winner;
 }
-//void winner(){
-//	if(inp[0][0]=='X')
-//}
+
+int draw(char a[3][3]) {
+    for (int i = 0; i < 3; i++)
+        for (int j = 0; j < 3; j++)
+            if (a[i][j] == 'a')
+                return 0;
+    return 1;
+}
+
+
 
 int main(){
-	char inp[3][3]={'1','2','3','4','5','6','7','8','9'};
-	int ply = 1;
-	char cnv;
-	char ch;
-	int per=1;
+	string player1, player2;
+	char num[3][3]={'1','2','3','4','5','6','7','8','9'}, a[3][3], turn[2] = {'X', 'O'}, ch = 'X', inp, winner, res;
+    int count = 0,re=1;
+    
+    
+	cout<<"TIC TAC TOE GAME BY REGIANA HERMAWAN - 2338018425\n";
+	cout<<"=================================================\n";
+
+	cout<<"Masukkan nama player 1 : ";
+		getline(cin,player1);
+	cout<<"Masukkan nama player 2 : ";
+		getline(cin,player2);
+	
+	cout<<player1 <<" adalah X dan "<<player2<<" adalah O\n";
+   	 cout << "\nTic Tac Toe\nTekan tombol apa saja untuk melajutkan";
+    getch();
+	system("cls");
+
+    for (int i = 0; i < 3; i++)
+        for (int j = 0; j < 3; j++)
+            a[i][j] = 'a';
+            
+    system("cls");
+    while (1) {
+        disp(a,num);
+        if(re%2==0){
+        	cout << "\n" << player2 << " Memasukkan input\n";
+        	re++;
+		}else{
+			cout << "\n" << player1 << " Memasukkan input\n";	
+			re++;
+		}
+
+        inp = getch();
+        if (inp == 27)
+            break;
+    
+    	system("cls");
+
+        if (inp <= 48 || inp >= 58 || !check(a, inp)) {
+            cout << "\n" << ch << "Sudah terisi\n";
+            cout << "MASUKKAN ULANG!!\n\n";
+        } else {
+            add(a, inp, ch);
+            winner = gameover(a);
+            
+            if (winner == 'a') {
+                if (draw(a)) {
+                    cout << "\nMatch Drawn!\n";
+                    break;
+                }
+                ch = turn[(++count) % 2];
+            } else {
+            	if(winner=='X'){
+					cout << "\n" << player1 << " Menang!\n";
+               		break;
+				}
+				else if(winner=='O'){
+					cout << "\n" << player2 << " Menang!\n";
+               		break;
+				}
+                
+            }
+        }
+    }
+
+    getch();
+    system("cls");
+    cout << "\nWant to play more?";
+
+
 	
 
-
-	for(int a=0;a<3;a++){
-		for(int c=0;c<3;c++){
-			
-
-//			system("cls");
-			disp (inp);
-			
-
-			if(ply%2==0){
-				ply++;
-				cout<<"input b : ";
-				cin>>cnv;	
-			}else{
-				ply++;
-				cout<<"input a : ";
-				cin>>cnv;
-				
-			}
-			terisi(cnv, inp);
-			convert(ch, per, cnv, inp);
-//			system("cls");
-			disp (inp);
-			
-		}
-		
-	}
 	
 }
